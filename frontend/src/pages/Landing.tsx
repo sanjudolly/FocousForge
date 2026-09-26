@@ -6,9 +6,7 @@ import {
   ChevronDown, Star, CheckCircle2, ArrowRight, Flame, Clock,
   Users, TrendingUp, Lock, Sparkles,
 } from 'lucide-react';
-
-const HeroLineup = lazy(() => import('../components/3d/FloatingCartoonScene').then(m => ({ default: m.HeroLineup })));
-const FloatingCartoonScene = lazy(() => import('../components/3d/FloatingCartoonScene'));
+import { HeroFloatVisual, GradientOrb, MorphingBlob, PageFloaters } from '../components/ui/FloatingElements';
 
 /* ── Features ─────────────────────────── */
 const FEATURES = [
@@ -166,45 +164,8 @@ export default function Landing() {
               className="relative h-[500px] lg:h-[620px] rounded-3xl overflow-hidden"
               style={{ background: 'linear-gradient(135deg,rgba(219,234,254,0.6),rgba(237,233,254,0.6),rgba(252,231,243,0.6))',
                 border: '2px solid rgba(255,255,255,0.9)', boxShadow: '0 20px 80px rgba(139,92,246,0.2)' }}>
-              <Suspense fallback={
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="text-4xl animate-bounce">🎭</div>
-                </div>
-              }>
-                <FloatingCartoonScene variant="hero" orbitControls />
-              </Suspense>
-
-              {/* Floating overlay cards */}
-              <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute bottom-6 left-4 rounded-2xl p-3.5 w-52"
-                style={{ background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(16px)',
-                  border: '1.5px solid rgba(255,255,255,0.9)', boxShadow: '0 8px 24px rgba(139,92,246,0.15)' }}>
-                <div className="flex items-center gap-2 mb-1.5">
-                  <div className="w-6 h-6 rounded-md bg-emerald-100 flex items-center justify-center">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                  </div>
-                  <span className="text-indigo-900 text-xs font-bold">Goal Completed! 🎉</span>
-                </div>
-                <p className="text-indigo-500 text-xs">Complete DSA Course</p>
-                <div className="mt-2 h-1.5 bg-indigo-100 rounded-full overflow-hidden">
-                  <div className="h-full rounded-full w-full" style={{ background: 'linear-gradient(90deg,#8b5cf6,#ec4899)' }} />
-                </div>
-                <div className="flex items-center gap-1 mt-1.5">
-                  <Star className="w-3 h-3 text-amber-400" fill="currentColor" />
-                  <span className="text-amber-600 text-xs font-semibold">+150 XP earned</span>
-                </div>
-              </motion.div>
-
-              <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                className="absolute top-6 right-4 rounded-2xl p-3.5 w-48"
-                style={{ background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(16px)',
-                  border: '1.5px solid rgba(255,255,255,0.9)', boxShadow: '0 8px 24px rgba(139,92,246,0.15)' }}>
-                <div className="flex items-center gap-2 mb-1">
-                  <Flame className="w-4 h-4 text-orange-500" />
-                  <span className="text-orange-600 text-xs font-bold">🔥 14-Day Streak!</span>
-                </div>
-                <p className="text-indigo-400 text-xs">Doraemon's watching you 👀</p>
-              </motion.div>
+              {/* ── Float Visual replaces 3D ── */}
+              <HeroFloatVisual />
             </motion.div>
           </div>
         </div>
@@ -244,25 +205,32 @@ export default function Landing() {
             ))}
           </motion.div>
 
-          {/* Characters 3D lineup */}
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="mt-12 rounded-3xl overflow-hidden h-72 relative"
-            style={{ background: 'linear-gradient(135deg,rgba(219,234,254,0.7),rgba(237,233,254,0.7),rgba(252,231,243,0.7))',
-              border: '2px solid rgba(255,255,255,0.9)', boxShadow: '0 12px 48px rgba(139,92,246,0.15)' }}>
-            <Suspense fallback={<div className="flex items-center justify-center h-full text-4xl animate-bounce">🎭</div>}>
-              <HeroLineup />
-            </Suspense>
-            <div className="absolute bottom-4 left-0 right-0 text-center">
+          {/* Floating emoji grid replaces 3D lineup */}
+          <motion.div initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
+            className="mt-10 rounded-3xl overflow-hidden p-8 relative"
+            style={{ background:'linear-gradient(135deg,rgba(219,234,254,0.7),rgba(237,233,254,0.7),rgba(252,231,243,0.7))', border:'2px solid rgba(255,255,255,0.9)', boxShadow:'0 12px 48px rgba(139,92,246,0.15)', minHeight:200 }}>
+            <div className="flex flex-wrap justify-center gap-4">
+              {CHARACTERS.map((c, i) => (
+                <motion.div key={c.name}
+                  animate={{ y:[0,-12,5,-8,0], rotate:[-3,3,-2,2,-3], scale:[1,1.06,0.96,1.04,1] }}
+                  transition={{ duration:4+i*0.5, delay:i*0.3, repeat:Infinity, ease:'easeInOut' }}>
+                  <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${c.color} flex items-center justify-center text-4xl shadow-xl`}
+                    style={{ boxShadow:`0 12px 32px rgba(0,0,0,0.15)` }}>
+                    {c.emoji}
+                  </div>
+                  <p className="text-center text-xs font-bold text-indigo-700 mt-2">{c.name}</p>
+                </motion.div>
+              ))}
+            </div>
+            <div className="text-center mt-4">
               <span className="px-4 py-1.5 rounded-full text-xs font-semibold text-indigo-700"
-                style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(10px)' }}>
+                style={{ background:'rgba(255,255,255,0.85)', backdropFilter:'blur(10px)' }}>
                 🎨 Choose your companion during onboarding
               </span>
             </div>
           </motion.div>
         </div>
       </section>
-
-      {/* ── FEATURES ── */}
       <section id="features" className="py-24 px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-14">

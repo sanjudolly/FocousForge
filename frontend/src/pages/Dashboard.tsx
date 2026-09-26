@@ -1,10 +1,8 @@
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Target, Plus, Flame, Trophy, Zap, TrendingUp, AlertCircle, Star, CheckCircle2, Clock, IndianRupee, Heart, Coins } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { Canvas } from '@react-three/fiber';
-import { Float, OrbitControls, Stars, Sparkles } from '@react-three/drei';
 import { useAuthStore } from '../store/authStore';
 import { goalsAPI } from '../services/api';
 import { DashboardData, Goal, Commitment } from '../types';
@@ -13,28 +11,7 @@ import CommitmentCard from '../components/ui/CommitmentCard';
 import AnimatedCounter from '../components/ui/AnimatedCounter';
 import ProgressRing from '../components/ui/ProgressRing';
 import { SkeletonCard, SkeletonStat } from '../components/ui/LoadingSkeleton';
-import { CHAR_MAP_SAFE, type CharacterType } from '../components/3d/CharacterBridge';
-
-/* ── Companion 3D widget ────────────────────── */
-function CompanionWidget({ companion }: { companion?: string }) {
-  const CompChar = CHAR_MAP_SAFE[(companion ?? 'doraemon') as CharacterType] ?? CHAR_MAP_SAFE['doraemon'];
-  return (
-    <Canvas camera={{ position: [0, 0.5, 7], fov: 52 }} gl={{ antialias: true, alpha: true }} dpr={[1, 1.5]}>
-      <Suspense fallback={null}>
-        <ambientLight intensity={0.9} color="#fff0f8" />
-        <pointLight position={[5, 5, 5]} intensity={2.5} color="#f472b6" />
-        <pointLight position={[-5, -3, 4]} intensity={2} color="#818cf8" />
-        <Stars radius={60} depth={30} count={600} factor={3} saturation={0.8} fade speed={1.2} />
-        <Sparkles count={50} scale={10} size={2} speed={0.5} color="#f472b6" opacity={0.6} />
-        <Float speed={1.2} rotationIntensity={0.3} floatIntensity={0.7}>
-          <CompChar position={[0, -0.4, 0]} />
-        </Float>
-        <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5}
-          minPolarAngle={Math.PI / 3} maxPolarAngle={Math.PI / 2} />
-      </Suspense>
-    </Canvas>
-  );
-}
+import { DashboardCompanion, PageFloaters } from '../components/ui/FloatingElements';
 
 /* ── Stat card ───────────────────────────────── */
 function StatCard({ label, value, icon: Icon, grad, suffix = '', delay = 0 }: {
@@ -111,21 +88,10 @@ export default function Dashboard() {
 
   const xpInLevel = (user?.xp ?? 0) % 500;
   const xpPct = (xpInLevel / 500) * 100;
-  const companion = (user as unknown as { companion?: string })?.companion;
 
   return (
     <div className="min-h-screen" style={{ background: 'linear-gradient(135deg,#f0f9ff 0%,#f5f3ff 45%,#fef9c3 100%)' }}>
-      {/* Ambient blobs */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        {[
-          { w: 500, h: 400, style: { top: '-5%', left: '10%' },   bg: 'rgba(147,197,253,0.35)', d: 0 },
-          { w: 400, h: 350, style: { top: '30%', right: '5%' },   bg: 'rgba(216,180,254,0.3)',  d: 1 },
-          { w: 350, h: 300, style: { bottom: '5%', left: '20%' }, bg: 'rgba(167,243,208,0.28)', d: 2 },
-        ].map((b, i) => (
-          <div key={i} className="absolute rounded-full blur-3xl animate-float"
-            style={{ width: b.w, height: b.h, ...b.style, background: b.bg, animationDelay: `${b.d}s` }} />
-        ))}
-      </div>
+      <PageFloaters variant="default" />
 
       <div className="relative z-10 dash-inner">
         {/* HEADER */}
@@ -315,15 +281,9 @@ export default function Dashboard() {
               <p className="text-indigo-300 text-xs text-center mt-3">Completion · Streak · XP</p>
             </div>
 
-            {/* Companion */}
+            {/* Companion widget — floating animation */}
             <div className="dash-env-widget">
-              <CompanionWidget companion={companion} />
-              <div className="absolute bottom-3 left-0 right-0 flex justify-center">
-                <span className="px-3 py-1 rounded-full text-xs font-semibold text-indigo-600"
-                  style={{ background:'rgba(255,255,255,0.9)', backdropFilter:'blur(10px)' }}>
-                  🎭 Your Companion
-                </span>
-              </div>
+              <DashboardCompanion name={`${user?.name?.split(' ')[0]}'s Space`} level={user?.level ?? 1} xp={user?.xp ?? 0} />
             </div>
 
             {/* Quick links */}
