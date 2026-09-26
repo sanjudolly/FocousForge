@@ -158,15 +158,10 @@ export default function GoalDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen px-4 md:px-8 lg:px-12 max-w-6xl mx-auto pt-6">
-        <div className="animate-pulse space-y-6">
-          <div className="h-10 bg-white/10 rounded-xl w-40" />
-          <div className="h-72 bg-white/5 rounded-3xl border border-white/10" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-36 bg-white/5 rounded-2xl border border-white/10" />
-            ))}
-          </div>
+      <div className="min-h-screen flex items-center justify-center" style={{ background:'linear-gradient(135deg,#f5f3ff,#ede9fe,#ecfdf5)' }}>
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-violet-200 border-t-violet-500 rounded-full animate-spin" />
+          <p className="text-violet-500 text-sm font-semibold">Loading goal...</p>
         </div>
       </div>
     );
@@ -174,23 +169,14 @@ export default function GoalDetail() {
 
   if (error || !goal) {
     return (
-      <div className="min-h-screen px-4 md:px-8 lg:px-12 max-w-4xl mx-auto pt-6 flex items-center justify-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-10 text-center max-w-md"
-        >
-          <div className="w-16 h-16 rounded-2xl bg-red-500/20 flex items-center justify-center mx-auto mb-5">
-            <AlertTriangle className="w-8 h-8 text-red-400" />
-          </div>
-          <h2 className="text-2xl font-bold text-white mb-3">Goal Not Found</h2>
-          <p className="text-white/50 mb-8">{error || 'This goal could not be loaded.'}</p>
-          <Link
-            to="/goals"
-            className={`${theme.primaryBtn} ${theme.primaryBtnHover} px-6 py-3 rounded-xl font-semibold text-white inline-flex items-center gap-2`}
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Goals
+      <div className="min-h-screen flex items-center justify-center px-4" style={{ background:'linear-gradient(135deg,#f5f3ff,#ede9fe)' }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          className="ff-card text-center p-10 max-w-md">
+          <div className="text-5xl mb-4">🔍</div>
+          <h2 className="text-2xl font-black text-indigo-900 mb-3">Goal Not Found</h2>
+          <p className="text-indigo-400 mb-8">{error || 'This goal could not be loaded.'}</p>
+          <Link to="/goals" className="ff-btn ff-btn-primary inline-flex">
+            <ArrowLeft className="w-4 h-4" /> Back to Goals
           </Link>
         </motion.div>
       </div>
@@ -200,27 +186,17 @@ export default function GoalDetail() {
   const status = statusConfig[goal.status];
 
   return (
-    <div className="relative min-h-screen px-4 md:px-8 lg:px-12 max-w-6xl mx-auto pt-6 pb-20">
-      {/* Floating decorations */}
-      <div className="fixed top-32 right-16 w-24 h-24 rounded-full blur-3xl opacity-25 animate-float pointer-events-none"
-        style={{ backgroundColor: theme.primary }} />
-      <div className="fixed bottom-40 left-16 w-20 h-20 rounded-full blur-3xl opacity-20 animate-float-delay-1 pointer-events-none"
-        style={{ backgroundColor: theme.secondary }} />
-      <div className="fixed top-1/2 right-1/4 w-16 h-16 rounded-full blur-2xl opacity-25 animate-float-delay-2 pointer-events-none"
-        style={{ backgroundColor: theme.crystalColor }} />
-      <div className="fixed bottom-1/3 left-1/3 w-12 h-12 rounded-full blur-2xl opacity-20 animate-float-delay-3 pointer-events-none"
-        style={{ backgroundColor: theme.accent }} />
+    <div className="relative min-h-screen px-4 md:px-8 lg:px-12 max-w-6xl mx-auto pt-6 pb-20"
+      style={{ background:'linear-gradient(135deg,#f5f3ff 0%,#ede9fe 40%,#ecfdf5 100%)' }}>
+      {/* Ambient blobs */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="absolute top-0 right-0 w-72 h-64 rounded-full blur-3xl opacity-25 animate-float" style={{ background:'rgba(139,92,246,0.2)' }} />
+        <div className="absolute bottom-0 left-0 w-64 h-60 rounded-full blur-3xl opacity-20 animate-float-slow" style={{ background:'rgba(16,185,129,0.18)' }} />
+      </div>
 
       {/* Back Nav */}
-      <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        className="mb-6"
-      >
-        <Link
-          to="/goals"
-          className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm font-medium"
-        >
+      <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="mb-6 relative z-10">
+        <Link to="/goals" className="inline-flex items-center gap-2 text-indigo-400 hover:text-indigo-700 transition-colors text-sm font-medium">
           <ArrowLeft className="w-4 h-4" />
           Back to Goals
         </Link>
@@ -231,7 +207,7 @@ export default function GoalDetail() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden mb-8"
+        className="ff-card mb-8 overflow-hidden relative"
       >
         {/* Glow */}
         <div className={`absolute inset-0 opacity-30 bg-gradient-to-br ${cat.bg} rounded-3xl blur-2xl`} />
@@ -240,7 +216,7 @@ export default function GoalDetail() {
 
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-5 gap-0">
           {/* Left: 3D Celebration Scene */}
-          <div className="lg:col-span-2 relative overflow-hidden border-b lg:border-b-0 lg:border-r border-white/10 min-h-[280px] flex items-center justify-center">
+          <div className="lg:col-span-2 relative overflow-hidden border-b lg:border-b-0 lg:border-r border-violet-100 min-h-[280px] flex items-center justify-center">
             {goal.status === 'completed' ? (
               <CelebrationScene color={theme.crystalColor} />
             ) : (
@@ -266,7 +242,7 @@ export default function GoalDetail() {
           <div className="lg:col-span-3 p-6 md:p-8">
             {/* Category + Status */}
             <div className="flex flex-wrap items-center gap-2 mb-4">
-              <span className={`${cat.bg} ${cat.text} text-xs font-medium px-3 py-1 rounded-full border border-white/10`}>
+              <span className={`${cat.bg} ${cat.text} text-xs font-medium px-3 py-1 rounded-full border border-violet-100`}>
                 {cat.icon} {goal.category}
               </span>
               <span className={`${status.bg} ${status.color} text-xs font-medium px-3 py-1 rounded-full border ${status.border}`}>
@@ -288,14 +264,14 @@ export default function GoalDetail() {
                     type="text"
                     value={editTitle}
                     onChange={(e) => setEditTitle(e.target.value)}
-                    className="w-full bg-white/8 border border-white/20 rounded-xl px-4 py-3 text-white text-xl md:text-2xl font-bold focus:outline-none focus:border-white/30"
+                    className="w-full bg-violet-50 border border-violet-200 rounded-xl px-4 py-3 text-white text-xl md:text-2xl font-bold focus:outline-none focus:border-white/30"
                     placeholder="Goal title"
                   />
                   <textarea
                     value={editDescription}
                     onChange={(e) => setEditDescription(e.target.value)}
                     rows={3}
-                    className="w-full bg-white/8 border border-white/20 rounded-xl px-4 py-3 text-white/80 text-sm focus:outline-none focus:border-white/30 resize-none"
+                    className="w-full bg-violet-50 border border-violet-200 rounded-xl px-4 py-3 text-white/80 text-sm focus:outline-none focus:border-white/30 resize-none"
                     placeholder="Describe your goal..."
                   />
                   <div className="flex gap-2">
@@ -305,7 +281,7 @@ export default function GoalDetail() {
                       className={`${theme.primaryBtn} ${theme.primaryBtnHover} px-4 py-2 rounded-xl text-sm font-medium text-white flex items-center gap-1.5 disabled:opacity-50`}
                     >
                       {actionLoading === 'edit' ? (
-                        <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                        <div className="w-4 h-4 border-2 border-violet-200 border-t-white rounded-full animate-spin" />
                       ) : (
                         <Save className="w-4 h-4" />
                       )}
@@ -318,7 +294,7 @@ export default function GoalDetail() {
                         setEditDescription(goal.description);
                       }}
                       disabled={actionLoading === 'edit'}
-                      className="px-4 py-2 rounded-xl text-sm font-medium border border-white/15 text-white/60 hover:bg-white/10 hover:text-white transition-all flex items-center gap-1.5 disabled:opacity-50"
+                      className="px-4 py-2 rounded-xl text-sm font-medium border border-white/15 text-indigo-500 hover:bg-violet-100/50 hover:text-white transition-all flex items-center gap-1.5 disabled:opacity-50"
                     >
                       <X className="w-4 h-4" />
                       Cancel
@@ -333,7 +309,7 @@ export default function GoalDetail() {
                     </h1>
                     <button
                       onClick={() => setEditing(true)}
-                      className="p-2 rounded-xl text-white/40 hover:text-white hover:bg-white/10 transition-all flex-shrink-0"
+                      className="p-2 rounded-xl text-indigo-400 hover:text-white hover:bg-violet-100/50 transition-all flex-shrink-0"
                       title="Edit"
                     >
                       <Edit3 className="w-4 h-4" />
@@ -387,7 +363,7 @@ export default function GoalDetail() {
               <button
                 onClick={() => setShowDeleteConfirm(true)}
                 disabled={actionLoading === 'delete'}
-                className="ml-auto p-2.5 rounded-xl text-white/40 hover:text-red-400 hover:bg-red-500/10 transition-all disabled:opacity-50"
+                className="ml-auto p-2.5 rounded-xl text-indigo-400 hover:text-red-400 hover:bg-red-500/10 transition-all disabled:opacity-50"
                 title="Delete goal"
               >
                 <Trash2 className="w-4 h-4" />
@@ -405,32 +381,32 @@ export default function GoalDetail() {
         className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
       >
         {/* Commitment Amount */}
-        <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 overflow-hidden">
+        <div className="relative bg-violet-50/50 backdrop-blur-xl border border-violet-100 rounded-2xl p-5 overflow-hidden">
           <div className="absolute top-0 right-0 w-20 h-20 rounded-full blur-2xl opacity-20 animate-float"
             style={{ backgroundColor: theme.primary }} />
           <div className="relative">
-            <div className="flex items-center gap-2 text-white/40 text-xs font-medium mb-2">
+            <div className="flex items-center gap-2 text-indigo-400 text-xs font-medium mb-2">
               <DollarSign className="w-3.5 h-3.5" />
               Commitment
             </div>
             <div className="text-2xl md:text-3xl font-bold text-white">
               ${goal.commitmentAmount}
             </div>
-            <div className="text-[10px] text-white/30 mt-1">TEST MODE</div>
+            <div className="text-[10px] text-indigo-300 mt-1">TEST MODE</div>
           </div>
         </div>
 
         {/* Progress */}
-        <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 overflow-hidden">
+        <div className="relative bg-violet-50/50 backdrop-blur-xl border border-violet-100 rounded-2xl p-5 overflow-hidden">
           <div className="absolute top-0 right-0 w-20 h-20 rounded-full blur-2xl opacity-20 animate-float-delay-1"
             style={{ backgroundColor: theme.accent }} />
           <div className="relative">
-            <div className="flex items-center gap-2 text-white/40 text-xs font-medium mb-2">
+            <div className="flex items-center gap-2 text-indigo-400 text-xs font-medium mb-2">
               <TrendingUp className="w-3.5 h-3.5" />
               Progress
             </div>
             <div className="text-2xl md:text-3xl font-bold text-white mb-2">{goal.progress}%</div>
-            <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+            <div className="h-1.5 bg-violet-100/50 rounded-full overflow-hidden">
               <motion.div
                 className="h-full rounded-full bg-gradient-to-r"
                 style={{
@@ -445,32 +421,32 @@ export default function GoalDetail() {
         </div>
 
         {/* XP Reward */}
-        <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 overflow-hidden">
+        <div className="relative bg-violet-50/50 backdrop-blur-xl border border-violet-100 rounded-2xl p-5 overflow-hidden">
           <div className="absolute top-0 right-0 w-20 h-20 rounded-full blur-2xl opacity-20 animate-float-delay-2"
             style={{ backgroundColor: theme.crystalColor }} />
           <div className="relative">
-            <div className="flex items-center gap-2 text-white/40 text-xs font-medium mb-2">
+            <div className="flex items-center gap-2 text-indigo-400 text-xs font-medium mb-2">
               <Award className="w-3.5 h-3.5" />
               XP Reward
             </div>
             <div className="text-2xl md:text-3xl font-bold text-white">+{goal.xpReward}</div>
-            <div className="text-[10px] text-white/30 mt-1">
+            <div className="text-[10px] text-indigo-300 mt-1">
               {goal.status === 'completed' ? 'Earned' : 'On completion'}
             </div>
           </div>
         </div>
 
         {/* Streak */}
-        <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 overflow-hidden">
+        <div className="relative bg-violet-50/50 backdrop-blur-xl border border-violet-100 rounded-2xl p-5 overflow-hidden">
           <div className="absolute top-0 right-0 w-20 h-20 rounded-full blur-2xl opacity-20 animate-float-delay-3"
             style={{ backgroundColor: '#f97316' }} />
           <div className="relative">
-            <div className="flex items-center gap-2 text-white/40 text-xs font-medium mb-2">
+            <div className="flex items-center gap-2 text-indigo-400 text-xs font-medium mb-2">
               <Flame className="w-3.5 h-3.5" />
               Streak
             </div>
             <div className="text-2xl md:text-3xl font-bold text-white">{goal.streak}</div>
-            <div className="text-[10px] text-white/30 mt-1">
+            <div className="text-[10px] text-indigo-300 mt-1">
               {goal.streak === 1 ? 'day' : 'days'} consistent
             </div>
           </div>
@@ -486,7 +462,7 @@ export default function GoalDetail() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 md:p-8 overflow-hidden relative"
+            className="ff-card p-6 md:p-8 overflow-hidden relative"
           >
             <div className="absolute -top-10 -left-10 w-32 h-32 rounded-full blur-3xl opacity-20 animate-float"
               style={{ backgroundColor: countdown?.isOverdue ? '#ef4444' : theme.primary }} />
@@ -498,7 +474,7 @@ export default function GoalDetail() {
                     <Clock className="w-5 h-5" />
                     Deadline Countdown
                   </h3>
-                  <p className="text-white/40 text-sm mt-1">
+                  <p className="text-indigo-400 text-sm mt-1">
                     {new Date(goal.deadline).toLocaleDateString(undefined, {
                       weekday: 'long',
                       year: 'numeric',
@@ -529,7 +505,7 @@ export default function GoalDetail() {
                         className={`relative text-center p-5 rounded-2xl border overflow-hidden ${
                           countdown.isOverdue
                             ? 'bg-red-500/10 border-red-500/20'
-                            : 'bg-white/5 border-white/10'
+                            : 'bg-violet-50/50 border-violet-100'
                         }`}
                       >
                         <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity"
@@ -539,11 +515,11 @@ export default function GoalDetail() {
                               : `radial-gradient(circle at 50% 0%, ${theme.primary}20, transparent 70%)`,
                           }} />
                         <div className="relative">
-                          <Icon className={`w-4 h-4 mx-auto mb-2 ${countdown.isOverdue ? 'text-red-400' : 'text-white/40'}`} />
+                          <Icon className={`w-4 h-4 mx-auto mb-2 ${countdown.isOverdue ? 'text-red-400' : 'text-indigo-400'}`} />
                           <div className={`text-3xl md:text-4xl font-bold ${countdown.isOverdue ? 'text-red-400' : 'text-white'}`}>
                             {item.value}
                           </div>
-                          <div className={`text-[10px] mt-1 ${countdown.isOverdue ? 'text-red-400/60' : 'text-white/30'}`}>
+                          <div className={`text-[10px] mt-1 ${countdown.isOverdue ? 'text-red-400/60' : 'text-indigo-300'}`}>
                             {item.label}
                           </div>
                         </div>
@@ -567,7 +543,7 @@ export default function GoalDetail() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 md:p-8"
+            className="ff-card p-6 md:p-8"
           >
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-lg font-bold text-white flex items-center gap-2">
@@ -581,7 +557,7 @@ export default function GoalDetail() {
             </div>
 
             <div className="mb-6">
-              <div className="h-3 bg-white/10 rounded-full overflow-hidden">
+              <div className="h-3 bg-violet-100/50 rounded-full overflow-hidden">
                 <motion.div
                   className="h-full rounded-full relative"
                   style={{
@@ -594,7 +570,7 @@ export default function GoalDetail() {
                   <div className="absolute inset-0 bg-white/20 rounded-full animate-pulse" />
                 </motion.div>
               </div>
-              <div className="flex justify-between mt-2 text-xs text-white/30">
+              <div className="flex justify-between mt-2 text-xs text-indigo-300">
                 <span>Started: {new Date(goal.createdAt).toLocaleDateString()}</span>
                 <span>{goal.progress < 100 ? `${100 - goal.progress}% to go` : '🎉 Complete!'}</span>
               </div>
@@ -609,7 +585,7 @@ export default function GoalDetail() {
                     <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl mx-auto flex items-center justify-center mb-2 border transition-all ${
                       reached
                         ? 'border-transparent'
-                        : 'border-white/10 bg-white/5'
+                        : 'border-violet-100 bg-violet-50/50'
                     }`}
                     style={reached ? {
                       backgroundImage: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})`,
@@ -619,10 +595,10 @@ export default function GoalDetail() {
                       {reached ? (
                         <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-white" />
                       ) : (
-                        <span className="text-white/30 text-xs font-medium">{milestone}%</span>
+                        <span className="text-indigo-300 text-xs font-medium">{milestone}%</span>
                       )}
                     </div>
-                    <div className={`text-[10px] ${reached ? 'text-white/70' : 'text-white/30'}`}>
+                    <div className={`text-[10px] ${reached ? 'text-white/70' : 'text-indigo-300'}`}>
                       {milestone}%
                     </div>
                   </div>
@@ -636,7 +612,7 @@ export default function GoalDetail() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
-            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 md:p-8"
+            className="ff-card p-6 md:p-8"
           >
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-lg font-bold text-white flex items-center gap-2">
@@ -646,29 +622,29 @@ export default function GoalDetail() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-center">
+              <div className="p-4 rounded-2xl bg-violet-50/50 border border-violet-100 text-center">
                 <Flame className="w-6 h-6 text-orange-400 mx-auto mb-2" />
                 <div className="text-2xl font-bold text-white">{goal.streak}</div>
-                <div className="text-xs text-white/40">Current Streak</div>
+                <div className="text-xs text-indigo-400">Current Streak</div>
               </div>
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-center">
+              <div className="p-4 rounded-2xl bg-violet-50/50 border border-violet-100 text-center">
                 <Star className="w-6 h-6 text-amber-400 mx-auto mb-2" />
                 <div className="text-2xl font-bold text-white">
                   {goal.status === 'completed' ? goal.streak : Math.max(0, goal.streak - 1)}
                 </div>
-                <div className="text-xs text-white/40">Best Streak</div>
+                <div className="text-xs text-indigo-400">Best Streak</div>
               </div>
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-center">
+              <div className="p-4 rounded-2xl bg-violet-50/50 border border-violet-100 text-center">
                 <Sparkles className="w-6 h-6 mx-auto mb-2"
                   style={{ color: theme.crystalColor }} />
                 <div className="text-2xl font-bold text-white">+{goal.xpReward}</div>
-                <div className="text-xs text-white/40">XP on Complete</div>
+                <div className="text-xs text-indigo-400">XP on Complete</div>
               </div>
             </div>
 
             {/* Simplified streak bar - 14 days */}
             <div>
-              <p className="text-xs text-white/40 mb-3">Last 14 Days Activity</p>
+              <p className="text-xs text-indigo-400 mb-3">Last 14 Days Activity</p>
               <div className="flex gap-1.5 justify-between">
                 {Array.from({ length: 14 }, (_, i) => {
                   const dayOffset = 13 - i;
@@ -710,7 +686,7 @@ export default function GoalDetail() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6"
+            className="bg-violet-50/50 backdrop-blur-xl border border-violet-100 rounded-3xl p-6"
           >
             <h3 className="text-lg font-bold text-white flex items-center gap-2 mb-5">
               <ShieldCheck className="w-5 h-5" />
@@ -718,7 +694,7 @@ export default function GoalDetail() {
             </h3>
 
             <div className="space-y-4">
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+              <div className="p-4 rounded-2xl bg-violet-50/50 border border-violet-100">
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${theme.primaryBtn}`}
                     style={{ boxShadow: `0 4px 12px ${theme.primary}30` }}
@@ -730,7 +706,7 @@ export default function GoalDetail() {
                   </div>
                   <div>
                     <div className="text-sm font-semibold text-white">{verificationLabel}</div>
-                    <div className="text-xs text-white/40">
+                    <div className="text-xs text-indigo-400">
                       {goal.verificationType === 'github'
                         ? 'Automated commit tracking'
                         : goal.verificationType === 'photo'
@@ -742,26 +718,26 @@ export default function GoalDetail() {
               </div>
 
               {goal.verificationType === 'github' && (
-                <div className="space-y-2 p-4 rounded-2xl bg-white/5 border border-white/10">
-                  <div className="flex items-center gap-2 text-xs text-white/40 mb-2">
+                <div className="space-y-2 p-4 rounded-2xl bg-violet-50/50 border border-violet-100">
+                  <div className="flex items-center gap-2 text-xs text-indigo-400 mb-2">
                     <Github className="w-3.5 h-3.5" />
                     Repository Details
                   </div>
                   {goal.githubUsername && (
                     <div className="flex justify-between text-sm">
-                      <span className="text-white/40">Username</span>
+                      <span className="text-indigo-400">Username</span>
                       <span className="text-white/80 font-medium">{goal.githubUsername}</span>
                     </div>
                   )}
                   {goal.githubRepo && (
                     <div className="flex justify-between text-sm">
-                      <span className="text-white/40">Repository</span>
+                      <span className="text-indigo-400">Repository</span>
                       <span className="text-white/80 font-medium">{goal.githubRepo}</span>
                     </div>
                   )}
                   {goal.githubBranch && (
                     <div className="flex justify-between text-sm">
-                      <span className="text-white/40">Branch</span>
+                      <span className="text-indigo-400">Branch</span>
                       <span className="text-white/80 font-medium">{goal.githubBranch}</span>
                     </div>
                   )}
@@ -770,7 +746,7 @@ export default function GoalDetail() {
                       href={`https://github.com/${goal.githubUsername}/${goal.githubRepo}${goal.githubBranch ? `/tree/${goal.githubBranch}` : ''}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-2 flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 font-medium pt-2 border-t border-white/10"
+                      className="mt-2 flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 font-medium pt-2 border-t border-violet-100"
                     >
                       View on GitHub
                       <ExternalLink className="w-3 h-3" />
@@ -786,7 +762,7 @@ export default function GoalDetail() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35 }}
-            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6"
+            className="bg-violet-50/50 backdrop-blur-xl border border-violet-100 rounded-3xl p-6"
           >
             <h3 className="text-lg font-bold text-white flex items-center gap-2 mb-5">
               <Bell className="w-5 h-5" />
@@ -796,7 +772,7 @@ export default function GoalDetail() {
             {goal.reminderDays && goal.reminderDays.length > 0 ? (
               <div className="space-y-2">
                 {goal.reminderDays.sort((a, b) => b - a).map((day) => (
-                  <div key={day} className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
+                  <div key={day} className="flex items-center justify-between p-3 rounded-xl bg-violet-50/50 border border-violet-100">
                     <div className="flex items-center gap-2.5">
                       <Bell className="w-3.5 h-3.5" style={{ color: theme.crystalColor }} />
                       <span className="text-sm text-white/70">
@@ -810,7 +786,7 @@ export default function GoalDetail() {
             ) : (
               <div className="text-center py-4">
                 <Bell className="w-8 h-8 text-white/20 mx-auto mb-2" />
-                <p className="text-white/40 text-sm">No reminders set</p>
+                <p className="text-indigo-400 text-sm">No reminders set</p>
                 <p className="text-white/25 text-xs mt-1">You can enable reminders when creating a goal</p>
               </div>
             )}
@@ -821,7 +797,7 @@ export default function GoalDetail() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6"
+            className="bg-violet-50/50 backdrop-blur-xl border border-violet-100 rounded-3xl p-6"
           >
             <h3 className="text-lg font-bold text-white flex items-center gap-2 mb-5">
               <Target className="w-5 h-5" />
@@ -829,26 +805,26 @@ export default function GoalDetail() {
             </h3>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between items-center pb-3 border-b border-white/5">
-                <span className="text-white/40">Created</span>
+                <span className="text-indigo-400">Created</span>
                 <span className="text-white/70">{new Date(goal.createdAt).toLocaleDateString()}</span>
               </div>
               {goal.completedAt && (
                 <div className="flex justify-between items-center pb-3 border-b border-white/5">
-                  <span className="text-white/40">Completed</span>
+                  <span className="text-indigo-400">Completed</span>
                   <span className="text-emerald-400">{new Date(goal.completedAt).toLocaleDateString()}</span>
                 </div>
               )}
               <div className="flex justify-between items-center pb-3 border-b border-white/5">
-                <span className="text-white/40">Deadline</span>
+                <span className="text-indigo-400">Deadline</span>
                 <span className="text-white/70">{new Date(goal.deadline).toLocaleDateString()}</span>
               </div>
               <div className="flex justify-between items-center pb-3 border-b border-white/5">
-                <span className="text-white/40">Penalty Destination</span>
+                <span className="text-indigo-400">Penalty Destination</span>
                 <span className="text-white/70 capitalize">{goal.penaltyDestination || 'Charity'}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-white/40">Goal ID</span>
-                <span className="text-white/30 font-mono text-xs">{goal._id.slice(0, 8)}...</span>
+                <span className="text-indigo-400">Goal ID</span>
+                <span className="text-indigo-300 font-mono text-xs">{goal._id.slice(0, 8)}...</span>
               </div>
             </div>
           </motion.div>
@@ -872,14 +848,14 @@ export default function GoalDetail() {
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               className="fixed inset-x-4 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md"
             >
-              <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-6 shadow-2xl">
+              <div className="bg-violet-50/50 backdrop-blur-2xl border border-violet-100 rounded-3xl p-6 shadow-2xl">
                 <div className="flex items-start gap-4 mb-5">
                   <div className="w-12 h-12 rounded-2xl bg-red-500/20 flex items-center justify-center flex-shrink-0 border border-red-500/30">
                     <AlertTriangle className="w-6 h-6 text-red-400" />
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-white mb-1">Delete this goal?</h3>
-                    <p className="text-white/50 text-sm leading-relaxed">
+                    <p className="text-indigo-400 text-sm leading-relaxed">
                       This action cannot be undone. Your commitment amount will be forfeited and all progress will be lost.
                     </p>
                   </div>
@@ -888,7 +864,7 @@ export default function GoalDetail() {
                   <button
                     onClick={() => !actionLoading && setShowDeleteConfirm(false)}
                     disabled={actionLoading === 'delete'}
-                    className="flex-1 py-3 rounded-2xl font-medium border border-white/15 text-white/70 hover:bg-white/10 hover:text-white transition-all disabled:opacity-30"
+                    className="flex-1 py-3 rounded-2xl font-medium border border-white/15 text-white/70 hover:bg-violet-100/50 hover:text-white transition-all disabled:opacity-30"
                   >
                     Cancel
                   </button>

@@ -147,10 +147,16 @@ export default function Dashboard() {
               <span className="text-indigo-400 text-xs">{(user?.xp ?? 0).toLocaleString()} XP</span>
             </div>
           </div>
-          <Link to="/goals/new" className="dash-new-btn"
-            style={{ background: 'linear-gradient(135deg,#8b5cf6,#ec4899)' }}>
-            <Plus size={16} /> New Commitment
-          </Link>
+          <div className="flex gap-2 flex-wrap">
+            <Link to="/commitments/new" className="dash-new-btn"
+              style={{ background: 'linear-gradient(135deg,#10b981,#059669)' }}>
+              💰 Commit Money
+            </Link>
+            <Link to="/goals/new" className="dash-new-btn"
+              style={{ background: 'linear-gradient(135deg,#8b5cf6,#ec4899)' }}>
+              <Plus size={16} /> New Goal
+            </Link>
+          </div>
         </div>
 
         {/* ── Charity Impact mini banner ── */}
