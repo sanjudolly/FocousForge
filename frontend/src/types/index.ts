@@ -111,28 +111,7 @@ export interface Transaction {
   createdAt: string;
 }
 
-export interface DashboardData {
-  user: {
-    name: string;
-    xp: number;
-    level: number;
-    streak: number;
-    focusScore: number;
-    theme: Theme;
-    avatar: User['avatar'];
-  };
-  stats: {
-    activeGoals: number;
-    completedGoals: number;
-    failedGoals: number;
-    totalGoals: number;
-    totalCommitmentValue: number;
-  };
-  goals: Goal[];
-  recentAchievements: Achievement[];
-}
-
-/* ── Pocket-Money Commitment System ───────────────────────────── */
+/* ── Pocket-Money Commitment System ─────────────────────────── */
 
 export type CommitmentCategory = 'study' | 'coding' | 'fitness' | 'career' | 'personal' | 'other';
 export type CommitmentVerification = 'photo' | 'document' | 'github' | 'manual';
@@ -218,7 +197,7 @@ export interface TimelineEntry {
   emoji: string;
 }
 
-// Extend DashboardData to include commitment stats
+/* ── Single DashboardData (includes commitment stats) ────────── */
 export interface DashboardData {
   user: {
     name: string;
