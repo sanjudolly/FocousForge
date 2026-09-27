@@ -17,13 +17,14 @@ export default function AnimatedCounter({
   decimals = 0,
   className = '',
 }: AnimatedCounterProps) {
-  const [display, setDisplay] = useState(0);
+  const [display, setDisplay] = useState(value);
+  const prevValueRef = useRef(value);
   const startRef = useRef<number | null>(null);
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    const from = display;
+    const from = prevValueRef.current;
     const to = value;
     startRef.current = null;
 
@@ -33,11 +34,15 @@ export default function AnimatedCounter({
       const progress = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
       setDisplay(from + (to - from) * eased);
-      if (progress < 1) rafRef.current = requestAnimationFrame(animate);
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(animate);
+      } else {
+        prevValueRef.current = to;
+      }
     };
     rafRef.current = requestAnimationFrame(animate);
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
-  }, [value]);
+  }, [value, duration]);
 
   return (
     <span className={className}>

@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Octokit } from '@octokit/rest';
+import { fetchGithubCommits } from '../utils/github';
 import Proof from '../models/Proof';
 import Goal from '../models/Goal';
 import User from '../models/User';
@@ -36,9 +36,8 @@ export const submitProof = async (req: AuthRequest, res: Response): Promise<void
     if (type === 'github') {
       // Verify via GitHub API
       try {
-        const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
         const branch = githubBranch || 'main';
-        const { data: commits } = await octokit.repos.listCommits({
+        const commits = await fetchGithubCommits({
           owner: githubUsername,
           repo: githubRepo,
           sha: branch,

@@ -9,7 +9,6 @@
     "start": "node dist/server.js"
   },
   "dependencies": {
-    "@octokit/rest": "^21.0.2",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.5.0",
     "cors": "^2.8.5",

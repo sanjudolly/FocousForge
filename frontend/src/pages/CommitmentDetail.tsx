@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -64,7 +64,7 @@ export default function CommitmentDetail() {
   const [celebrated,   setCeleb]  = useState(false);
 
   /* ── Load commitment + timeline ── */
-  const load = async () => {
+  const load = useCallback(async () => {
     if (!id) return;
     setLoading(true);
     try {
@@ -79,9 +79,9 @@ export default function CommitmentDetail() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
-  useEffect(() => { load(); }, [id]);
+  useEffect(() => { load(); }, [load]);
 
   /* ── Toggle task ── */
   const toggleTask = async (taskId: string) => {

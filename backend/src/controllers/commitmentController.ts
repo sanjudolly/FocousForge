@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
 import mongoose from 'mongoose';
-import { Octokit } from '@octokit/rest';
+import { fetchGithubCommits } from '../utils/github';
 import Commitment from '../models/Commitment';
 import User from '../models/User';
 import { AuthRequest } from '../middleware/auth';
@@ -288,8 +288,7 @@ export const submitProof = async (req: AuthRequest, res: Response): Promise<void
         return;
       }
       try {
-        const octokit = new Octokit();
-        const { data: commits } = await octokit.repos.listCommits({
+        const commits = await fetchGithubCommits({
           owner: githubUsername,
           repo:  githubRepo,
           sha:   githubBranch || 'main',
