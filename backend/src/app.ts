@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import helmet from 'helmet';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
@@ -21,16 +22,6 @@ import commitmentRoutes from './routes/commitments';
 import { processExpiredGoalsAndCommitments } from './jobs/goalProcessor';
 
 const app = express();
-
-/* ── Connect DB Middleware ── */
-app.use(async (_req, _res, next) => {
-  try {
-    await connectDB();
-    next();
-  } catch (err) {
-    next(err);
-  }
-});
 
 /* ── Security ── */
 app.use(helmet({ crossOriginResourcePolicy: false }));
@@ -79,15 +70,8 @@ if (process.env.NODE_ENV !== 'test') {
 
 /* ── API Router ── */
 const apiRouter = express.Router();
-apiRouter.use('/auth', authRoutes);
-apiRouter.use('/goals', goalRoutes);
-apiRouter.use('/proof', proofRoutes);
-apiRouter.use('/analytics', analyticsRoutes);
-apiRouter.use('/notifications', notificationRoutes);
-apiRouter.use('/achievements', achievementRoutes);
-apiRouter.use('/stripe', stripeRoutes);
-apiRouter.use('/commitments', commitmentRoutes);
 
+// Health check endpoint (always available, does not block on database)
 apiRouter.get('/health', (_req, res) => {
   res.json({
     status: 'ok',
@@ -95,7 +79,23 @@ apiRouter.get('/health', (_req, res) => {
     timestamp: new Date(),
     environment: process.env.NODE_ENV || 'development',
     serverless: Boolean(process.env.VERCEL),
+    hasMongoUri: Boolean(process.env.MONGO_URI),
+    dbConnected: mongoose.connection.readyState === 1,
   });
+});
+
+// Database connection middleware for data routes
+apiRouter.use(async (_req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err: any) {
+    res.status(503).json({
+      success: false,
+      message: 'Database connection failed. Please ensure MONGO_URI is configured correctly in Vercel Environment Variables.',
+      error: err.message,
+    });
+  }
 });
 
 // Vercel Cron or manual processor endpoint
@@ -113,7 +113,16 @@ apiRouter.get('/cron/process-goals', async (_req, res) => {
   }
 });
 
-// Mount on /api (direct calls and standard routes)
+apiRouter.use('/auth', authRoutes);
+apiRouter.use('/goals', goalRoutes);
+apiRouter.use('/proof', proofRoutes);
+apiRouter.use('/analytics', analyticsRoutes);
+apiRouter.use('/notifications', notificationRoutes);
+apiRouter.use('/achievements', achievementRoutes);
+apiRouter.use('/stripe', stripeRoutes);
+apiRouter.use('/commitments', commitmentRoutes);
+
+// Mount on /api
 app.use('/api', apiRouter);
 
 /* ── Static Files (Production Frontend) ── */

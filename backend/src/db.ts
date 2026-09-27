@@ -12,9 +12,10 @@ export const connectDB = async (): Promise<typeof mongoose> => {
   try {
     const db = await mongoose.connect(MONGO_URI, {
       bufferCommands: false,
+      serverSelectionTimeoutMS: 5000,
     });
     isConnected = db.connections[0].readyState;
-    console.log('✅  MongoDB connected →', MONGO_URI);
+    console.log('✅  MongoDB connected');
     return db;
   } catch (error) {
     console.error('❌  MongoDB connection error:', error);
